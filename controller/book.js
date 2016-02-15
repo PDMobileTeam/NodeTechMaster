@@ -1,5 +1,6 @@
 "use strict";
 var bookDB  = require("../model/books");
+var errors = require("../errors");
 exports.getListBooks = function (req, res) {
     bookDB.listBooks(function (err, data) {
         if (err) {
@@ -31,7 +32,7 @@ exports.updateMultiBooks = function (req, res) {
 exports.getBook = function (req, res) {
     bookDB.getBook(req.params.id, function (err, data) {
         if (err) {
-            res.json(err)
+            res.status(404).json(errors.bookNotExists)
         } else {
             res.json(data)
         }
