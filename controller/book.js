@@ -25,12 +25,20 @@ exports.createNewBook = function (req, res) {
 };
 
 exports.deleteMultiBooks = function (req, res) {
-    res.json("delete")
+    var arrayId = req.body.ids.split(" ")
+    var sentinel = 0
+    arrayId.forEach(function(id){
+        Book.findOneAndRemove({ID : id}, function(err) {
+            if (++sentinel === arrayId.length) {
+                res.status(202).json()
+            }
+        })
+    })
 };
 
 exports.updateMultiBooks = function (req, res) {
-    res.json("update")
-}
+    res.json("updateBook")
+};
 
 exports.getBook = function (req, res) {
     Book.findOne({ID : req.params.id}, function (err, data){
