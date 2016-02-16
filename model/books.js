@@ -122,7 +122,7 @@ var books = [
         }
     };
     
-    exports.updateBook = function (data, cb) {
+    exports.updateBook = function (data, cb) {        
         var bookIndex = findIndex(data.id);
         if (bookIndex > -1) {
             books[bookIndex] = data
@@ -136,7 +136,7 @@ var books = [
        var bookIndex = findIndex(id);
         if (bookIndex > -1) {
             books.splice(bookIndex, 1)
-            cb(null, books[bookIndex])
+            cb(null, books)
         } else {
             cb("Book is not existed")
         } 

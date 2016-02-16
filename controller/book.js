@@ -38,3 +38,23 @@ exports.getBook = function (req, res) {
         }
     })
 };
+
+exports.deleteBook = function (req, res) {
+    bookDB.deleteBook(req.params.id, function (err, data) {
+        if (err) {
+            res.status(404).json(errors.bookNotExists)
+        } else {
+            res.json("Delete successful.")
+        }
+    })
+};
+
+exports.updateBook = function (req, res) {
+    bookDB.updateBook(req.body, function (err, data) {
+        if (err) {
+            res.json(err)
+        } else {
+            res.json(data)
+        }
+    })
+}
