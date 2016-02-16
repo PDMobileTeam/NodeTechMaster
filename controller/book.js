@@ -33,31 +33,44 @@ exports.updateMultiBooks = function (req, res) {
 }
 
 exports.getBook = function (req, res) {
-    bookDB.getBook(req.params.id, function (err, data) {
+    Book.findOne({ID : req.params.id}, function (err, data){
         if (err) {
-            res.status(404).json(errors.bookNotExists)
+            res.json(err);
         } else {
-            res.json(data)
+            res.json(data);
         }
-    })
+    });
 };
 
 exports.deleteBook = function (req, res) {
-    bookDB.deleteBook(req.params.id, function (err, data) {
-        if (err) {
-            res.status(404).json(errors.bookNotExists)
-        } else {
-            res.json("Delete successful.")
-        }
+    Book.findOneAndRemove({ID : req.params.id}, {
+        ID : req.body.ID,
+        Title : req.body.Title,
+        SubTitle : req.body.SubTitle,
+        Description : req.body.Description,
+        Image : req.body.Image,
+        isbn : req.body.isbn
+    }, function (err){
+        if (err) return res.json(err)
+        res.status(202).json()
     })
 };
 
 exports.updateBook = function (req, res) {
-    bookDB.updateBook(req.body, function (err, data) {
-        if (err) {
-            res.json(err)
-        } else {
-            res.json(data)
-        }
-    })
+    Book.findOne({ID: req.params.id}, function(err, data){
+       if (err) {
+           res.json(err)
+       } else {
+           data.ID = req.body.ID || data.ID
+           data.Title = req.body.Title
+           data.SubTitle = req.body.SubTitle
+           data.Description = req.body.Description
+           data.Image = req.body.Image
+           data.isbn = req.body.isbn
+           data.save(function (err) {
+               if (err) return res.json(err)
+               res.status(202).json(data)
+           })
+       } 
+    });
 }
